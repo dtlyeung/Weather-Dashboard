@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Weather Dashboard</title>
+</head>
+<body>
+    <header class="jumbotron">
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <section class="container-fluid">
+        <div class="row">
+            <section class="col-lg-3 bg-light">
+                <h5 class="mt-1">Search for city :</h5>
+                <section class="input-group mb-3">
+                    <input id="searchbar" type="text" class="form-control" placeholder="City Name" aria-label="searchbar">
+                    <section class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </section>
+                </section>
+                <button class="btn btn-primary mb-3" type="button" id="clear-history">Clear search history</button>
+                <form id="history"></form>
+            </section>
+            <section class="col-lg-9">
+                <div class="row mr-0">
+                    <section class="col-lg-11 card m-3 d-none" id="today-weather">
+                        <div class="card-body">
+                            <h3 id="city-name" class="city-name align-middle"></h3>
+                            <img id="current-pic" alt="">
+                            <p id="temperature"></p>
+                            <p id="humidity"></p>
+                            <p id="wind-speed"></p>
+                            <p id="UV-index"></p>
+                        </div>
+                    </section>
+                </div>
+                <section class="row d-none" id="forecast-header">
+                    <div class="col-12">
+                        <h3>5 Day Forecast</h3>
+                    </div>
+                </section>
+                <section class="row">
+                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
+                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
+                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
+                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
+                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
+                </section>
+            </section>
+        </div>
+    </section>
+
+</body>
+</html>
