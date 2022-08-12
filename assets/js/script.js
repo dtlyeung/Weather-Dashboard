@@ -1,16 +1,16 @@
 function page(){
-    const city = document.getElementById();
-    const search = document.getElementById();
-    const clear = document.getElementById();
-    const location = document.getElementById();
-    const temperature = document.getElementById();
-    const humid = document.getElementById();
-    const wind = document.getElementById();
-    const uvindex = document.getElementById();
-    const history = document.getElementById();
-    var fiveforecast = document.getElementById();
-    var currentweather = document.getElementById();
-    let searchhistory = JSON.parse(localStorage.getItem(""));
+    const city = document.getElementById("searchbar");
+    const search = document.getElementById("searchBtn");
+    const clear = document.getElementById("clear");
+    const location = document.getElementById("city");
+    const temperature = document.getElementById("temperature");
+    const humid = document.getElementById("humidity");
+    const wind = document.getElementById("wind-speed");
+    const uvindex = document.getElementById("UV-index");
+    const history = document.getElementById("history");
+    var fiveforecast = document.getElementById("forecast-header");
+    var currentweather = document.getElementById("currentweather");
+    let searchhistory = JSON.parse(localStorage.getItem("search"));
 
     //API Key
     const APIkey = "29c83668768fe3eab3d3472440f95f73";
@@ -18,10 +18,10 @@ function page(){
     //get weather function
     function weather(cityname){
         //function to get weather from openweather
-        let getURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=" + APIKey;
+        let getURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&appid=" + APIKey;
         axios.get(getURL)
             .then(function(response){
-                todayweatherEl.classList.remove("d-none");
+                currentweather.classList.remove("d-none");
 
                 //display current weather - temperature, humidity, wind
                 const currentDate = new Date(response.data.dt * 1000);
@@ -29,9 +29,9 @@ function page(){
                 const month = currentDate.getMonth() + 1;
                 const year = currentDate.getFullYear();
                 location.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
-                currentTempEl.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
-                currentHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
-                currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
+                temperature.innerHTML = "Temperature: " + metric(response.data.main.temp) + " &#176C";
+                humid.innerHTML = "Humidity: " + response.data.main.humidity + "%";
+                wind.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
 
                 //display UV Index
                 let latitude = response.data.coord.lat;
@@ -89,16 +89,53 @@ function page(){
                             const forecastHumidity = document.createElement("p");
                             forecastHumidity.innerHTML = "Humidity: " + response.data.list[forecastIndex].main.humidity + "%";
                             forecast[i].append(forecastHumidity);
-                        }
-                })
-            })
-        }
+                        };
+                });
+            });
+        };
     
     //Search history from localStorage
     search.addEventListener("click", function () {
         const searchTerm = city.value;
-        getWeather(searchTerm);
-        searchHistory.push(searchTerm);
+        weather(searchTerm);
+        searchhistory.push(searchTerm);
         localStorage.setItem("search", JSON.stringify(searchHistory));
-        renderSearchHistory();
-    })
+        historysearch();
+    });
+
+    //Clear history
+    clear.addEventListener("click", function () {
+        localStorage.clear();
+        searchhistory = [];
+        historysearch();
+    });
+
+    //Convert Kelvin to celsius
+    function metric(K){
+        return Math.floor(K - 273.15)
+    };
+
+    //Search history function
+    function historysearch() {
+        history.innerHTML = "";
+        for (let i = 0; i < searchhistory.length; i++) {
+            const historycity = document.createElement("input");
+            historycity.setAttribute("type", "text");
+            historycity.setAttribute("readonly", true);
+            historycity.setAttribute("class", "form-control d-block bg-white");
+            historycity.setAttribute("value", searchhistory[i]);
+            historycity.addEventListener("click", function () {
+                weather(historycity.value);
+            })
+            history.append(historycity);
+        };
+    };
+    historysearch();
+    if (searchhistory.length > 0) {
+        weather(searchhistory[searchhistory.length - 1]);
+    };
+
+};
+
+page();
+
